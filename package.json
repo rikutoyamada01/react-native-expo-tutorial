@@ -18,7 +18,8 @@
   "dependencies": {
     "@babel/runtime": "^7.27.0",
     "@expo/metro-runtime": "~4.0.1",
-    "expo": "~52.0.42",
+    "@expo/vector-icons": "^14.0.2",
+    "expo": "~52.0.44",
     "expo-dev-client": "~5.0.19",
     "expo-status-bar": "~2.0.1",
     "react": "18.3.1",
@@ -32,6 +33,7 @@
     "@eslint/object-schema": "^2.1.6",
     "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
     "@types/eslint": "^9.6.1",
+    "@types/expo": "^33.0.3",
     "@types/react": "~18.3.12",
     "@typescript-eslint/eslint-plugin": "^8.29.0",
     "@typescript-eslint/parser": "^8.29.0",

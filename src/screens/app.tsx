@@ -16,7 +16,7 @@ const App: FC = () => {
         />
       </View>
       <View style={styles.footerContainer}>
-        <Button label="写真を選択"></Button>
+        <Button theme="primary" label="写真を選択"></Button>
         <Button label="この写真を使用"></Button>
       </View>
       <StatusBar style="auto" />
