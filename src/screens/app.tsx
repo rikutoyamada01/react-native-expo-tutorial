@@ -6,11 +6,25 @@ import { StatusBar } from "expo-status-bar";
 
 import PlaceholderImage from "@/assets/images/background-image.png";
 import { Button } from "@/components/button";
+import { CircleButton } from "@/components/circle-button";
+import { IconButton } from "@/components/icon-button";
 import { ImageViewer } from "@/components/image-viewer";
 
 const App: FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [showAppOptions, setShowAppOptions] = useState(false);
+
+  const onReset = () => {
+    setShowAppOptions(false);
+  };
+
+  const onAddSticker = () => {
+    alert("スタンプを追加する機能はまだ実装されていません。");
+  };
+
+  const onSaveImageAsync = async () => {
+    alert("画像を保存する機能はまだ実装されていません。");
+  };
 
   const pickImageAsync = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -35,7 +49,17 @@ const App: FC = () => {
         />
       </View>
       {showAppOptions ? (
-        <View />
+        <View style={styles.optionsContainer}>
+          <View style={styles.optionsRow}>
+            <IconButton icon="refresh" label="リセット" onPress={onReset} />
+            <CircleButton onPress={onAddSticker} />
+            <IconButton
+              icon="save-alt"
+              label="保存"
+              onPress={onSaveImageAsync}
+            />
+          </View>
+        </View>
       ) : (
         <View style={styles.footerContainer}>
           <Button
@@ -66,6 +90,14 @@ const styles = StyleSheet.create({
   },
   footerContainer: {
     flex: 1 / 3,
+    alignItems: "center",
+  },
+  optionsContainer: {
+    position: "absolute",
+    bottom: 80,
+  },
+  optionsRow: {
+    flexDirection: "row",
     alignItems: "center",
   },
 });
