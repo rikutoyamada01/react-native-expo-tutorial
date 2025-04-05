@@ -45,7 +45,7 @@ export const Button: FC<ButtonProps> = (props) => {
 
   return (
     <View style={styles.buttonContainer}>
-      <Pressable style={styles.button} onPress={() => alert("Button Pressed!")}>
+      <Pressable style={styles.button} onPress={props.onPress}>
         <Text style={styles.buttonLabel}>{props.label}</Text>
       </Pressable>
     </View>
