@@ -1,11 +1,17 @@
 import { useRef, useState, type FC } from "react";
-import { StyleSheet, View, type ImageSourcePropType } from "react-native";
+import {
+  Platform,
+  StyleSheet,
+  View,
+  type ImageSourcePropType,
+} from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { captureRef } from "react-native-view-shot";
 import { registerRootComponent } from "expo";
 import * as ImagePicker from "expo-image-picker";
 import * as Medialibrary from "expo-media-library";
 import { StatusBar } from "expo-status-bar";
+import DomToImage from "dom-to-image";
 
 import PlaceholderImage from "@/assets/images/background-image.png";
 import { Button } from "@/components/button";
@@ -43,19 +49,40 @@ const App: FC = () => {
   };
 
   const onSaveImageAsync = async () => {
-    try {
-      const localUri = await captureRef(imageRef, {
-        height: 400,
-        quality: 1,
-      });
+    if (Platform.OS !== "web") {
+      if (imageRef.current) {
+        try {
+          const localUri = await captureRef(imageRef, {
+            height: 400,
+            quality: 1,
+          });
 
-      await Medialibrary.saveToLibraryAsync(localUri);
-      if (localUri) {
-        alert("画像を保存しました。");
+          await Medialibrary.saveToLibraryAsync(localUri);
+          if (localUri) {
+            alert("画像を保存しました。");
+          }
+        } catch (error) {
+          console.error("Error saving image:", error);
+          alert("画像の保存に失敗しました。");
+        }
       }
-    } catch (error) {
-      console.error("Error saving image:", error);
-      alert("画像の保存に失敗しました。");
+    } else {
+      if (imageRef.current) {
+        try {
+          const dataUrl = await DomToImage.toJpeg(imageRef.current, {
+            quality: 0.95,
+            width: 320,
+            height: 440,
+          });
+
+          const link = document.createElement("a");
+          link.download = "sticker-smash.jpeg";
+          link.href = dataUrl;
+          link.click();
+        } catch (error) {
+          console.error("Error saving image:", error);
+        }
+      }
     }
   };
 
