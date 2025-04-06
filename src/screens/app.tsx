@@ -3,6 +3,7 @@ import { StyleSheet, View, type ImageSourcePropType } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { registerRootComponent } from "expo";
 import * as ImagePicker from "expo-image-picker";
+import * as Medialibrary from "expo-media-library";
 import { StatusBar } from "expo-status-bar";
 
 import PlaceholderImage from "@/assets/images/background-image.png";
@@ -21,6 +22,11 @@ const App: FC = () => {
   const [pickedEmoji, setPickedEmoji] = useState<ImageSourcePropType | null>(
     null,
   );
+  const [status, requestPermission] = Medialibrary.usePermissions();
+
+  if (status === null) {
+    void requestPermission();
+  }
 
   const onModalClose = () => {
     setIsModalVisible(false);
