@@ -1,6 +1,7 @@
-import { useState, type FC } from "react";
+import { useRef, useState, type FC } from "react";
 import { StyleSheet, View, type ImageSourcePropType } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { captureRef } from "react-native-view-shot";
 import { registerRootComponent } from "expo";
 import * as ImagePicker from "expo-image-picker";
 import * as Medialibrary from "expo-media-library";
@@ -23,6 +24,7 @@ const App: FC = () => {
     null,
   );
   const [status, requestPermission] = Medialibrary.usePermissions();
+  const imageRef = useRef(null);
 
   if (status === null) {
     void requestPermission();
@@ -41,7 +43,20 @@ const App: FC = () => {
   };
 
   const onSaveImageAsync = async () => {
-    alert("画像を保存する機能はまだ実装されていません。");
+    try {
+      const localUri = await captureRef(imageRef, {
+        height: 400,
+        quality: 1,
+      });
+
+      await Medialibrary.saveToLibraryAsync(localUri);
+      if (localUri) {
+        alert("画像を保存しました。");
+      }
+    } catch (error) {
+      console.error("Error saving image:", error);
+      alert("画像の保存に失敗しました。");
+    }
   };
 
   const pickImageAsync = async () => {
@@ -61,13 +76,15 @@ const App: FC = () => {
   return (
     <GestureHandlerRootView style={styles.container}>
       <View style={styles.imageContainer}>
-        <ImageViewer
-          placeholderImageSource={PlaceholderImage as ImageSourcePropType}
-          selectedImage={selectedImage}
-        />
-        {pickedEmoji && (
-          <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
-        )}
+        <View ref={imageRef} collapsable={false}>
+          <ImageViewer
+            placeholderImageSource={PlaceholderImage as ImageSourcePropType}
+            selectedImage={selectedImage}
+          />
+          {pickedEmoji && (
+            <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
+          )}
+        </View>
       </View>
       <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}>
         <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
