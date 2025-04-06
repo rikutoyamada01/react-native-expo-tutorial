@@ -141,7 +141,7 @@ const App: FC = () => {
           ></Button>
         </View>
       )}
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
     </GestureHandlerRootView>
   );
 };
